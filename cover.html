@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    #cover {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(45deg, white, skyblue);
+    }
+
+    img {
+      position: absolute;
+    }
+
+    .img1 {
+      width: 20vw;
+      left: 2vw;
+      top: 6vh;
+    }
+
+    .img2 {
+      width: 38vw;
+      left: 18vw;
+      top: 38vh;
+    }
+
+    .img3 {
+      width: 10vw;
+      right: 32vw;
+      bottom: 24vh;
+    }
+
+    h1 {
+      font-size: 22vh;
+      text-transform: uppercase;
+      font-family: 'Kdam Thmor Pro', sans-serif;
+      width: fit-content;
+      position: absolute;
+      filter: drop-shadow(2px 4px 6px black);
+    }
+
+    .h1-1 {
+      left: 28vw;
+      top: -1vh;
+    }
+
+    .h1-2 {
+      right: 5vw;
+      top: 24vh;
+      font-size: 18vh;
+    }
+
+    .h1-3 {
+      font-size: 15vh;
+      right: 14vw;
+      bottom: 19vh;
+      text-transform: none;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cover">
+    <img class="img1" src="./img1.png" alt="">
+    <img class="img2" src="./img2.png" alt="">
+    <img class="img3" src="./js.png" alt="">
+    <h1 class="h1-1">virtual</h1>
+    <h1 class="h1-2">scroller</h1>
+    <h1 class="h1-3">only</h1>
+  </div>
+</body>
+
+</html>
