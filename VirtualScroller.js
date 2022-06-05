@@ -23,6 +23,7 @@ class VirtualScroller {
     height,
     rowHeight,
     pageSize,
+    buffer,
     renderItem,
     loadMore
   }) {
@@ -55,7 +56,8 @@ class VirtualScroller {
     // set props
     this.height = height;
     this.rowHeight = rowHeight;
-    this.pageSize = pageSize;
+    this.pageSize = pageSize || 50;
+    this.buffer = buffer || 10;
     this.renderItem = renderItem;
     this.loadMore = loadMore;
     this.data = [];
@@ -68,7 +70,7 @@ class VirtualScroller {
     this.scroller.style.height = typeof height === 'number' ? height + 'px' : height;
 
     this.#loadInitData();
-    this.scroller.addEventListener('scroll', throttle(this.#handleScroll, 200));
+    this.scroller.addEventListener('scroll', throttle(this.#handleScroll, 150));
   }
 
   #topHiddenCount = 0;
@@ -123,22 +125,23 @@ class VirtualScroller {
   #toggleTopItems = (direction) => {
     const { scrollTop } = this.scroller;
     const firstVisibleItemIndex = Math.floor(scrollTop / this.rowHeight);
+    const firstExistingItemIndex = Math.max(0, firstVisibleItemIndex - this.buffer);
     const rows = this.contentBox.children;
     // replace invisible top items with padding top
     if (direction === 1) {
-      for (let i = this.#topHiddenCount; i < firstVisibleItemIndex; i++) {
+      for (let i = this.#topHiddenCount; i < firstExistingItemIndex; i++) {
         if (rows[0]) rows[0].remove();
       }
     }
     // restore hidden top items
     if (direction === -1) {
-      for (let i = this.#topHiddenCount - 1; i >= firstVisibleItemIndex; i--) {
+      for (let i = this.#topHiddenCount - 1; i >= firstExistingItemIndex; i--) {
         const item = this.data[i];
         const row = this.#renderRow(item);
         this.contentBox.prepend(row);
       }
     }
-    this.#topHiddenCount = firstVisibleItemIndex;
+    this.#topHiddenCount = firstExistingItemIndex;
     this.#paddingTop = this.#topHiddenCount * this.rowHeight;
     this.contentBox.style.paddingTop = this.#paddingTop + 'px';
   }
@@ -146,24 +149,26 @@ class VirtualScroller {
   #toggleBottomItems = (direction) => {
     const { scrollTop, clientHeight } = this.scroller;
     const lastVisibleItemIndex = Math.floor((scrollTop + clientHeight) / this.rowHeight);
+    const lastExistingItemIndex = lastVisibleItemIndex + this.buffer;
     this.#lastVisibleItemIndex = lastVisibleItemIndex;
     const rows = [...this.contentBox.children];
     // replace invisible bottom items with padding bottom
     if (direction === -1) {
-      for (let i = lastVisibleItemIndex + 1; i <= this.data.length; i++) {
+      for (let i = lastExistingItemIndex + 1; i <= this.data.length; i++) {
         const row = rows[i - this.#topHiddenCount];
         if (row) row.remove();
       }
     }
     // restore hidden bottom items
     if (direction === 1) {
-      for (let i = this.#topHiddenCount + rows.length; i <= lastVisibleItemIndex; i++) {
+      for (let i = this.#topHiddenCount + rows.length; i <= lastExistingItemIndex; i++) {
         const item = this.data[i];
+        if (!item) break;
         const row = this.#renderRow(item);
         this.contentBox.append(row);
       }
     }
-    this.#bottomHiddenCount = this.data.length - (this.#topHiddenCount + this.contentBox.children.length);
+    this.#bottomHiddenCount = Math.max(0, this.data.length - (this.#topHiddenCount + this.contentBox.children.length) - this.buffer);
     this.#paddingBottom = this.#bottomHiddenCount * this.rowHeight;
     this.contentBox.style.paddingBottom = this.#paddingBottom + 'px';
   }
