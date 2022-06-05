@@ -56,8 +56,8 @@ class VirtualScroller {
     // set props
     this.height = height;
     this.rowHeight = rowHeight;
-    this.pageSize = pageSize || 50;
-    this.buffer = buffer || 10;
+    this.pageSize = typeof pageSize === 'number' && pageSize > 0 ? pageSize : 50;
+    this.buffer = typeof buffer === 'number' && buffer >= 0 ? buffer : 10;
     this.renderItem = renderItem;
     this.loadMore = loadMore;
     this.data = [];

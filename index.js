@@ -12,8 +12,8 @@ const virtualScroller = new VirtualScroller({
   element: '#virtual-scroller',
   height: '80vh',
   rowHeight: 60, // px
-  pageSize: 1000,
-  // buffer: 10,
+  pageSize: 100,
+  buffer: 10,
   renderItem: function (dataItem) {
     const div = document.createElement('div');
     div.classList.add('row-content');
