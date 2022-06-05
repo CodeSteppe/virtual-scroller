@@ -1,13 +1,19 @@
-function debounce(fn, wait) {
+function throttle(fn, wait) {
+  let lastTime = 0;
   let timer;
   return function (...args) {
+    function run() {
+      const now = new Date().valueOf();
+      if (now - lastTime > wait) {
+        fn.apply(this, args);
+        lastTime = now;
+      }
+    }
     if (timer) {
       clearTimeout(timer);
     }
-    timer = setTimeout(() => {
-      fn.apply(this, args);
-      timer = null;
-    }, wait);
+    timer = setTimeout(run, wait);
+    run();
   }
 }
 
@@ -62,7 +68,7 @@ class VirtualScroller {
     this.scroller.style.height = typeof height === 'number' ? height + 'px' : height;
 
     this.#loadInitData();
-    this.scroller.addEventListener('scroll', debounce(this.#handleScroll, 200));
+    this.scroller.addEventListener('scroll', throttle(this.#handleScroll, 200));
   }
 
   #topHiddenCount = 0;
@@ -158,6 +164,7 @@ class VirtualScroller {
       }
     }
     this.#bottomHiddenCount = this.data.length - (this.#topHiddenCount + this.contentBox.children.length);
-    this.contentBox.style.paddingBottom = this.#bottomHiddenCount * this.rowHeight + 'px';
+    this.#paddingBottom = this.#bottomHiddenCount * this.rowHeight;
+    this.contentBox.style.paddingBottom = this.#paddingBottom + 'px';
   }
 }
