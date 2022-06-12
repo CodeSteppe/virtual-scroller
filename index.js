@@ -27,3 +27,12 @@ const virtualScroller = new VirtualScroller({
     return data;
   }
 });
+
+const areaSelector = new AreaSelector({
+  element: document.querySelector('#virtual-scroller'),
+  selectableTargetSelector: '.row',
+  dataSetKeyForSelection: 'index',
+  onSelectionChange: (selectedIds) => {
+    console.log('selectedIds', selectedIds);
+  }
+});

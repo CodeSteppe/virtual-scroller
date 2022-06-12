@@ -92,6 +92,7 @@ class VirtualScroller {
   #renderRow(item) {
     const rowContent = this.renderItem(item);
     const row = document.createElement('div');
+    row.classList.add('row');
     row.dataset.index = item
     row.style.height = this.rowHeight + 'px';
     row.appendChild(rowContent)
