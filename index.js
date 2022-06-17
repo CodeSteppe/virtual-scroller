@@ -1,11 +1,3 @@
-function fetchData(pageSize) {
-  for (let i = 0; i < pageSize; i++) {
-    const dataItem = dummyText.substring(0, Math.round(20 + Math.random() * dummyText.length) * 0.3);
-    const length = data.push(dataItem);
-    renderItem(dataItem, length - 1);
-  }
-}
-
 const virtualScroller = new VirtualScroller({
   element: '#virtual-scroller',
   height: '80vh',
