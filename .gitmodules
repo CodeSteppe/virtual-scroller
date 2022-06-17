@@ -1,0 +1,3 @@
+[submodule "area-selector"]
+	path = area-selector
+	url = git@github.com:CodeSteppe/area-selector.git
