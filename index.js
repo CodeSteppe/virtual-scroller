@@ -1,11 +1,3 @@
-function fetchData(pageSize) {
-  for (let i = 0; i < pageSize; i++) {
-    const dataItem = dummyText.substring(0, Math.round(20 + Math.random() * dummyText.length) * 0.3);
-    const length = data.push(dataItem);
-    renderItem(dataItem, length - 1);
-  }
-}
-
 const virtualScroller = new VirtualScroller({
   element: '#virtual-scroller',
   height: '80vh',
@@ -25,5 +17,14 @@ const virtualScroller = new VirtualScroller({
       data.push(dataItem);
     }
     return data;
+  }
+});
+
+const areaSelector = new AreaSelector({
+  element: document.querySelector('#virtual-scroller'),
+  selectableTargetSelector: '.row',
+  datasetKeyForSelection: 'index',
+  onSelectionChange: (ids) => {
+    virtualScroller.selectedIds = ids;
   }
 });

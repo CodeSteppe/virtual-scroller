@@ -90,11 +90,18 @@ class VirtualScroller {
   }
 
   #renderRow(item) {
+    const selected = this.selectedIds?.includes(item);
     const rowContent = this.renderItem(item);
     const row = document.createElement('div');
     row.dataset.index = item
+    row.classList.add('row');
+    if (selected) {
+      row.classList.add('selected');
+    } else {
+      row.classList.remove('selected');
+    }
     row.style.height = this.rowHeight + 'px';
-    row.appendChild(rowContent)
+    row.appendChild(rowContent);
     return row;
   }
 
@@ -107,7 +114,7 @@ class VirtualScroller {
   #handleScroll = (e) => {
     const { clientHeight, scrollHeight, scrollTop } = e.target;
     if (scrollHeight - (clientHeight + scrollTop) < 40) {
-      console.log('load more');
+      // console.log('load more');
       const newData = this.loadMore(this.pageSize);
       this.data.push(...newData);
     }
@@ -115,11 +122,11 @@ class VirtualScroller {
     this.#toggleTopItems(direction);
     this.#toggleBottomItems(direction);
     this.#scrollTop = scrollTop;
-    console.log({
-      direction,
-      topHiddenCount: this.#topHiddenCount,
-      lastVisibleItemIndex: this.#lastVisibleItemIndex
-    });
+    // console.log({
+    //   direction,
+    //   topHiddenCount: this.#topHiddenCount,
+    //   lastVisibleItemIndex: this.#lastVisibleItemIndex
+    // });
   }
 
   #toggleTopItems = (direction) => {

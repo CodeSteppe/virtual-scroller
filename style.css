@@ -17,3 +17,12 @@
   font-size: 36px;
   border-bottom: 1px solid #c4c4c4;
 }
+
+.row {
+  user-select: none;
+}
+
+.row[data-selected="true"],
+.row.selected {
+  background-color: #aee5ff;
+}
