@@ -25,6 +25,11 @@ const areaSelector = new AreaSelector({
   selectableTargetSelector: '.row',
   datasetKeyForSelection: 'index',
   onSelectionChange: (ids) => {
+    console.log('selected Ids: ', ids);
     virtualScroller.selectedIds = ids;
+    const rows = virtualScroller.scroller.querySelectorAll('.row');
+    rows.forEach((row => {
+      row.classList.remove('selected');
+    }));
   }
 });
